@@ -9,25 +9,10 @@
 MFRC522 rfidReader(SELECT_PIN, RESET_PIN);
 LiquidCrystal_I2C lcd(0x27, 16, 2); // Adjust I2C address if needed
 
-unsigned long startMillis;
-int startHours = 12, startMinutes = 55, startSeconds = 50;
 
 String lastCardUID = "";
 
-String getCurrentTime() {
-  unsigned long elapsedSeconds = (millis() - startMillis) / 1000;
-  int currentHours = startHours + (elapsedSeconds / 3600);
-  int currentMinutes = startMinutes + ((elapsedSeconds % 3600) / 60);
-  int currentSeconds = startSeconds + (elapsedSeconds % 60);
 
-  if (currentSeconds >= 60) { currentMinutes += currentSeconds / 60; currentSeconds %= 60; }
-  if (currentMinutes >= 60) { currentHours += currentMinutes / 60; currentMinutes %= 60; }
-  if (currentHours >= 24) { currentHours %= 24; }
-
-  char formattedTime[9];
-  sprintf(formattedTime, "%02d:%02d:%02d", currentHours, currentMinutes, currentSeconds);
-  return String(formattedTime);
-}
 
 void setup() {
   Serial.begin(9600);
@@ -36,7 +21,7 @@ void setup() {
   lcd.init();
   lcd.backlight();
 
-  startMillis = millis();
+ 
   lcd.setCursor(0, 0);
   lcd.print("Scan your Card");
 }
